@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="utf-8">
+    <title>Chat Room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta name="description" content="Sample illustrating the use of the Web Application Manifest.">
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <!--iOS optimization-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="iOS chat room">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="icon.png" sizes="152x152" rel="apple-touch-icon-precomposed">
+    <link href="icon.png" sizes="144x144" rel="apple-touch-icon-precomposed">
+    <link href="icon.png" sizes="76x76" rel="apple-touch-icon-precomposed">
+    <link href="icon.png" sizes="72x72" rel="apple-touch-icon-precomposed">
+    <link href="icon.png" sizes="120x120" rel="apple-touch-icon-precomposed">
+    <link href="icon.png" sizes="114x114" rel="apple-touch-icon-precomposed">
+    <link href="icon.png" sizes="57x57" rel="apple-touch-icon-precomposed">
+    
+    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="import" href="elements/elements.html">
+    <!--<link rel="shortcut icon" href="favicon.ico"/>
+    <link rel="bookmark" href="favicon.ico"/>-->
+    <style>
+        .shim {
+            position: fixed;
+            bottom: 54px;
+            left: 0;
+            right: 0;
+            height: 36px;
+            background: linear-gradient(rgba(255,255,255,0), #eee 80%) top center no-repeat;
+        }
+        iron-pages {
+            overflow-y: scroll;
+            padding-bottom: 16px;
+        }
+        #inputsection{
+            padding: 0 16px 6px 16px;
+        }
+
+        paper-textarea > paper-input-container{
+          background-color: white;
+          padding-right: 20px;
+          padding-bottom: 20px;
+          padding-left: 20px;
+
+          margin-right: 20px;
+          margin-bottom: 20px;
+          margin-left: 20px;
+        }
+        #topBar paper-input-container{
+          position: relative;
+          top: -11px;
+        }
+        #topBar .unfocused-line{background: #ffffff}
+        #topBar .focused-line{background: #5594dd}
+        #topBar label{color: #ffffff;}
+        #topBar .label-is-floating label{color: #ffffff;}
+        #topBar .label-is-highlighted label{color: #5594dd;}
+        #topBar input{color: #ffffff;}
+        paper-fab[icon=send] {background: #59a1f7;}
+    </style>
+</head>
+<body class="fullbleed unresolved">
+    <template id="app" is="dom-bind"> 
+        <paper-drawer-panel>
+            <paper-header-panel drawer>
+                <paper-toolbar>
+                    <span class="flex">Menu</span>
+                </paper-toolbar>
+                <paper-menu class='list' selected="{{page}}" valueattr="data-category">
+                    <paper-item data-category="PublicRoom" on-click="handleClickPublic">Public Room</paper-item>
+                    <paper-item data-category="PrivateRoom" on-click="handleClickPrivate">Private Space</paper-item>
+                </paper-menu>
+                <paper-menu>
+                  <paper-submenu>
+                    <paper-item class="menu-trigger">Online Users</paper-item>
+                    <paper-menu class="menu-content sublist">
+                      <online-list></online-list>
+                    </paper-menu>
+                  </paper-submenu>
+                </paper-menu>
+            </paper-header-panel>
+            <paper-header-panel main>
+                <paper-toolbar>
+                	<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                  <span id="header" class="title">Public Room</span>
+                  <paper-icon-button icon="search"></paper-icon-button>
+                  <paper-input class="gginput" label="Search..." id="searchinput" onchange="handleSearch(event)"></paper-input>
+                  <paper-icon-button icon="account-circle" class="dropdown-trigger"></paper-icon-button>
+                  <span>{{occupancy}}</span>
+                </paper-toolbar>    
+
+                <div class="fit layout vertical" id="AllSection" on-load="handleLoad">
+                    <iron-pages selected="{{page}}" valueattr="data-category" class="flex" id="maincontainer" on-scroll="handleScroll">
+                      <section data-category="PublicRoom">
+                        <div id="PublicRoom">
+                          <message-list></message-list>
+                        </div>
+                      </section>
+                      <section data-category="haha">
+                        <div id="PrivateSpace">
+                          <private-list></private-list>
+                        </div>
+                      </section>
+                    </iron-pages>
+                    <div class="shim"></div>
+                    <div class="horizontal layout" id="inputsection">
+                      <paper-input class="flex" label="Type message..." id="messageinput" value={{inputMeg}} on-keyup="handleKeyup" required></paper-input >
+                      <paper-fab icon="send" id="sendButton" on-tap="handleTap"></paper-fab>
+                    </div>
+                </div>
+            </paper-header-panel>
+        </paper-drawer-panel>
+    </template>
+
+    <script>
+        var loginUser;
+        $(document).ready(function(){
+          $.get("getName.php",function(data,state){
+            loginUser = data;
+          });
+        });
+        var responseAddress;
+        var responseOrder=0;
+
+        //DEFAULT PAGE IS PUBLIC ROOM NOW
+        var app = document.querySelector('#app');
+            app.page = 0;
+        var messagesRef = new Firebase('https://bbape2.firebaseio.com/messages');
+        var get_time =0;
+
+        function initialize(){
+            messagesRef.once("value", function(snap) {
+                
+                get_time = snap.numChildren();
+                lastpoint = get_time-21;
+                console.log(lastpoint);
+            });
+        }
+        function ini_response(){
+          articleAddress.once("value",function(snap){
+            responseOrder = snap.numChildren();
+          });
+        }
+        
+        initialize();
+        //ONLINE SITUATION
+        var userListRef = new Firebase('https://bbape2.firebaseio.com/onlineusers');
+        var myUserRef = userListRef.push();
+        var connectedRef = new Firebase("https://bbape2.firebaseio-demo.com//.info/connected");
+        var counter = 0;
+        userListRef.once("value",function(snap){
+        
+            userListRef.on("child_added",function(snap){
+                if(snap.val().name==loginUser){
+                    
+                    counter++;
+                }
+            });
+            if(counter==0){
+                
+                setUserStatus("online");
+            }
+        });
+        userListRef.on("child_removed",function(snap){
+            if(snap.val().name==loginUser){
+                
+                counter--;
+            }
+            if(counter==0){
+                
+                setUserStatus("online");
+            }
+        });
+        userListRef.on("value",function(snap){
+            app.occupancy = snap.numChildren();
+        });
+
+        connectedRef.on("value", function(isOnline) {
+            if (isOnline.val()) {
+             
+              myUserRef.onDisconnect().remove();
+            }
+        });
+
+        function setUserStatus(status) {
+
+            myUserRef.set({ name: loginUser, status: status });
+        }
+        //END OF ONLINE INFORMATION
+        
+        // LISTEN FOR KEYPRESS AND TAP EVENT
+        app.handleKeyup = function(e){
+
+          var message = app.inputMeg;
+          if (e.keyCode == 13) {
+            if(message){
+              if(app.page<4){
+                messagesRef.push({name:loginUser, text:message, time:get_time});
+                get_time++;
+              }
+              else{
+                console.log('key'+responseAddress.toString());
+                responseAddress.push({name:loginUser, text:message, time:responseOrder});
+                responseOrder++;
+              }
+            }
+            app.inputMeg='';
+          }
+        }
+        app.handleTap = function(){
+
+          var message = app.inputMeg;
+          if(message){
+            if(app.page<4){
+              messagesRef.push({name:loginUser, text:message, time:get_time});
+              get_time++;
+            }else{
+              responseAddress.push({name:loginUser, text:message, time:responseOrder});
+              responseOrder++;
+            }
+          }
+          app.inputMeg='';
+        }
+
+        //CLICK ON DRAW PANEL
+        app.handleClickPublic = function(){
+            
+            $('paper-item').removeClass('iron-selected');
+            $(event.target).addClass('iron-selected');
+          messagesRef = messagesRef.root().child('messages');
+          document.querySelector('#header').innerHTML = 'Public Room';
+          var draw = document.querySelector('paper-drawer-panel');
+          draw.togglePanel();
+          setTimeout(initialize(), 100);
+          $('#inputsection').show();
+          $('.shim').show();
+          $('message-list').attr('login-user',loginUser);
+        }
+        
+        app.handleClickPrivate = function(){
+
+            $('paper-item').removeClass('iron-selected');
+            $(event.target).addClass('iron-selected');
+          messagesRef = messagesRef.root().child('user').child(loginUser);
+          document.querySelector('#header').innerHTML = 'Private Space';
+          var draw = document.querySelector('paper-drawer-panel');
+          draw.togglePanel();
+          setTimeout(initialize(), 100);
+          $('#inputsection').show();
+          $('.shim').show();
+        }
+
+        //SET FIREBASE COLLECTION LOCATION
+        var locate = "https://bbape.firebaseio.com/user/"+loginUser;
+
+        //READ MORE
+        app.handleScroll = function(){
+            
+            var chatDiv = document.querySelector('iron-pages');
+
+            frontHeight = chatDiv.scrollHeight;
+            frontTop = chatDiv.scrollTop;
+            if(chatDiv.scrollTop<=300){
+                if(app.page==0 && lastpoint>=0){//Public Room
+                    
+                    $('message-list').prepend('<more-messagelist login-user="'+loginUser+'" endat="'+lastpoint+'" front-height="'+frontHeight+'" front-top="'+frontTop+'"></more-messagelist>');
+                    lastpoint = lastpoint-15;
+                }else if(app.page==1 && lastpoint>=0){//Private Space
+
+                    $('private-list').prepend('<more-privatelist login-user="'+loginUser+'" endat="'+lastpoint+'" location="'+locate+'"></more-privatelist>');
+                    lastpoint = lastpoint-15;
+                }
+            }
+        }//END OF READ MORE
+
+        $('message-list').attr('login-user',loginUser);
+        $('private-list').attr('location',locate);
+        $('private-list').attr('login-user',loginUser);
+    </script>  
+</body>
+</html>
