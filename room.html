@@ -118,12 +118,8 @@
     </template>
 
     <script>
-        var loginUser;
-        $(document).ready(function(){
-          $.get("getName.php",function(data,state){
-            loginUser = data;
-          });
-        });
+        var loginUser = location.href.split("?")[1];
+        console.log(loginUser);
         var responseAddress;
         var responseOrder=0;
 
