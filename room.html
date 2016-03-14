@@ -52,7 +52,7 @@
                   <span>{{occupancy}}</span>
                 </paper-toolbar>    
 
-                <div class="fit layout vertical" id="AllSection" on-load="handleLoad">
+                <div class="fit layout vertical" id="AllSection">
                     <iron-pages selected="{{page}}" valueattr="data-category" class="flex" id="maincontainer" on-scroll="handleScroll">
                       <section data-category="PublicRoom">
                         <div id="PublicRoom">
@@ -66,7 +66,7 @@
                       </section>
                     </iron-pages>
                     <div class="shim"></div>
-                    <div class="horizontal layout" id="inputsection">
+                    <div class="layout horizontal" id="inputsection">
                       <paper-input class="flex" label="Type message..." id="messageinput" value={{inputMeg}} on-keyup="handleKeyup" required></paper-input >
                       <paper-fab icon="send" id="sendButton" on-tap="handleTap"></paper-fab>
                     </div>
@@ -81,6 +81,9 @@
         console.log(loginUser);
         var responseAddress;
         var responseOrder=0;
+        //SET FIREBASE COLLECTION LOCATION
+        var locate = "https://bbape2.firebaseio.com/user/"+loginUser;
+        console.log('out '+locate);
 
         //DEFAULT PAGE IS PUBLIC ROOM NOW
         var app = document.querySelector('#app');
@@ -95,6 +98,10 @@
                 lastpoint = get_time-21;
                 console.log(lastpoint);
             });
+            $('message-list').attr('login-user',loginUser);
+            $('private-list').attr('location',locate);
+            $('private-list').attr('login-user',loginUser);
+            console.log('in '+locate);
         }
         function ini_response(){
           articleAddress.once("value",function(snap){
@@ -175,7 +182,7 @@
           document.querySelector('#header').innerHTML = 'Public Room';
           var draw = document.querySelector('paper-drawer-panel');
           draw.togglePanel();
-          $('message-list').attr('login-user',loginUser);
+          //$('message-list').attr('login-user',loginUser);
         }
         
         app.handleClickPrivate = function(){
@@ -184,11 +191,10 @@
           document.querySelector('#header').innerHTML = 'Private Space';
           var draw = document.querySelector('paper-drawer-panel');
           draw.togglePanel();
+          $('private-list').attr('location',locate);
+          $('private-list').attr('login-user',loginUser);
           //setTimeout(initialize(), 100);
         }
-
-        //SET FIREBASE COLLECTION LOCATION
-        var locate = "https://bbape2.firebaseio.com/user/"+loginUser;
 
         //READ MORE
         app.handleScroll = function(){
@@ -209,9 +215,6 @@
             }
         }//END OF READ MORE
 
-        $('message-list').attr('login-user',loginUser);
-        $('private-list').attr('location',locate);
-        $('private-list').attr('login-user',loginUser);
     </script>  
 </body>
 </html>
