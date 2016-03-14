@@ -98,9 +98,11 @@
                 lastpoint = get_time-21;
                 console.log(lastpoint);
             });
-            $('message-list').attr('login-user',loginUser);
-            $('private-list').attr('location',locate);
-            $('private-list').attr('login-user',loginUser);
+            //document.getElementById("ker").setAttribute("location", "haha")
+            //$('message-list').attr('login-user',loginUser);
+            //$('private-list').attr('location',locate);
+            //$('private-list').attr('login-user',loginUser);
+            console.log(document.getElementsByTagName("MESSAGE-LIST")[0].innerHTML);
             console.log('in '+locate);
         }
         function ini_response(){
