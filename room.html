@@ -22,48 +22,10 @@
     <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <link rel="import" href="elements/elements.html">
+    <link rel="stylesheet" href="room.min.css">
     <style is="custom-style" include="iron-flex></style>
     <!--<link rel="shortcut icon" href="favicon.ico"/>
     <link rel="bookmark" href="favicon.ico"/>-->
-    <style>
-        .shim {
-            position: fixed;
-            bottom: 54px;
-            left: 0;
-            right: 0;
-            height: 36px;
-            background: linear-gradient(rgba(255,255,255,0), #eee 80%) top center no-repeat;
-        }
-        iron-pages {
-            overflow-y: scroll;
-            padding-bottom: 16px;
-        }
-        #inputsection{
-            padding: 0 16px 6px 16px;
-        }
-
-        paper-textarea > paper-input-container{
-          background-color: white;
-          padding-right: 20px;
-          padding-bottom: 20px;
-          padding-left: 20px;
-
-          margin-right: 20px;
-          margin-bottom: 20px;
-          margin-left: 20px;
-        }
-        #topBar paper-input-container{
-          position: relative;
-          top: -11px;
-        }
-        #topBar .unfocused-line{background: #ffffff}
-        #topBar .focused-line{background: #5594dd}
-        #topBar label{color: #ffffff;}
-        #topBar .label-is-floating label{color: #ffffff;}
-        #topBar .label-is-highlighted label{color: #5594dd;}
-        #topBar input{color: #ffffff;}
-        paper-fab[icon=send] {background: #59a1f7;}
-    </style>
 </head>
 <body class="fullbleed unresolved">
     <template id="app" is="dom-bind"> 
