@@ -98,7 +98,7 @@
                 lastpoint = get_time-21;
                 console.log(lastpoint);
             });
-            document.getElementById("ker").setAttribute("login-user", loginUser)
+            //document.getElementById("ker").setAttribute("login-user", loginUser)
             //document.getElementsByTagName("MESSAGE-LIST")[0].setAttribute("login-user", loginUser);
             //$('message-list').attr('login-user',loginUser);
             //$('private-list').attr('location',locate);
@@ -108,6 +108,7 @@
         }
         $(document).ready(function(){
             initialize();    
+            setTimeout(function(){document.getElementById("ker").setAttribute("login-user", loginUser)},500);
         });
         //ONLINE SITUATION
         var userListRef = new Firebase('https://bbape2.firebaseio.com/onlineusers');
