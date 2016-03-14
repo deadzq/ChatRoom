@@ -18,12 +18,9 @@
     <link href="icon.png" sizes="120x120" rel="apple-touch-icon-precomposed">
     <link href="icon.png" sizes="114x114" rel="apple-touch-icon-precomposed">
     <link href="icon.png" sizes="57x57" rel="apple-touch-icon-precomposed">
-    
-    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <link rel="import" href="elements/elements.html">
     <link rel="stylesheet" href="css/room.min.css">
-    <style is="custom-style" include="iron-flex></style>
+    <link rel="import" href="elements/elements.html">
+    <style is="custom-style" include="iron-flex"></style>
     <!--<link rel="shortcut icon" href="favicon.ico"/>
     <link rel="bookmark" href="favicon.ico"/>-->
 </head>
@@ -79,7 +76,8 @@
             </paper-header-panel>
         </paper-drawer-panel>
     </template>
-
+    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js" integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00=" crossorigin="anonymous"></script>
     <script>
         var loginUser = location.href.split("?")[1];
         console.log(loginUser);
