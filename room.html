@@ -99,19 +99,16 @@
                 console.log(lastpoint);
             });
             //document.getElementById("ker").setAttribute("location", "haha")
-            //$('message-list').attr('login-user',loginUser);
+            console.log('herhehre');
+            $('message-list').attr('login-user',loginUser);
             //$('private-list').attr('location',locate);
             //$('private-list').attr('login-user',loginUser);
-            console.log(document.getElementsByTagName("MESSAGE-LIST")[0].innerHTML);
+            //console.log(document.getElementsByTagName("MESSAGE-LIST")[0].innerHTML);
             //console.log('in '+locate);
         }
-        function ini_response(){
-          articleAddress.once("value",function(snap){
-            responseOrder = snap.numChildren();
-          });
-        }
-        
-        initialize();
+        $(document).ready(function(){
+            initialize();    
+        });
         //ONLINE SITUATION
         var userListRef = new Firebase('https://bbape2.firebaseio.com/onlineusers');
         var myUserRef = userListRef.push();
