@@ -56,7 +56,7 @@
                     <iron-pages selected="{{page}}" valueattr="data-category" class="flex" id="maincontainer" on-scroll="handleScroll">
                       <section data-category="PublicRoom">
                         <div id="PublicRoom">
-                          <message-list></message-list>
+                          <message-list id="ker"></message-list>
                         </div>
                       </section>
                       <section data-category="haha">
@@ -98,9 +98,8 @@
                 lastpoint = get_time-21;
                 console.log(lastpoint);
             });
-            //document.getElementById("ker").setAttribute("location", "haha")
-            document.getElementsByTagName("MESSAGE-LIST")[0].setAttribute("login-user", loginUser);
-            console.log(document.getElementsByTagName("MESSAGE-LIST")[0].length);
+            document.getElementById("ker").setAttribute("login-user", loginUser)
+            //document.getElementsByTagName("MESSAGE-LIST")[0].setAttribute("login-user", loginUser);
             //$('message-list').attr('login-user',loginUser);
             //$('private-list').attr('location',locate);
             //$('private-list').attr('login-user',loginUser);
