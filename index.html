@@ -12,7 +12,6 @@
         <!--<link rel="shortcut icon" href="favicon.ico"/>
         <link rel="bookmark" href="favicon.ico"/>-->
         <style>
-            
             .inner input.box{
                 width: 310px;
                 height: 46px;
@@ -24,6 +23,7 @@
                 line-height: 46px;
                 color: #888;
                 border: 0;
+                text-align:center;
                 -moz-border-radius: 0;
                 -webkit-border-radius: 0;
                 border-radius: 0;
@@ -122,26 +122,17 @@
                             <label class="sr-only" for="userName">UserName</label>
                             <input type="text" name="userName" placeholder="Enter your name..." class="box form-control" id="userName">
                         </div>
-                        <button type="submit" class="btn" id="btn">go CHAT :)</button>
+                        <button type="submit" class="btn" id="btn" onclick="handleclick()">go CHAT :)</button>
                     </div>
                 </div>
             </div>
         </div>    
     </body>
-    <script src="https://code.jquery.com/jquery-2.2.1.min.js" integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function(){
-            $("#btn").click(function(){
-                var userName = $("#userName").val();
-                $.post("whoYouAre.php",
-                    {'userName':userName},
-                    function(data,state){
-                        //data should be name
-                        console.log(data);
-                    }
-                );
-            });
-        });
+        function handleclick(){
+            var name = document.getElementById("userName").value;
+            location.href='room.html?'+name;
+        }
     </script>
 </html>
