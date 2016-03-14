@@ -1,0 +1,33 @@
+<link rel="import" href="../bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="contact-card.html">
+
+<dom-module id="message-list">  
+  <template>
+    <firebase-collection
+      order-by-child="time"
+      limit-to-last="20"
+      location="https://bbape.firebaseio.com/messages"
+      data="{{messages}}"
+      order-value-type="number">
+    </firebase-collection>
+    <template is="dom-repeat" items="{{messages}}">
+        <contact-card name-test="{{item.name}}" log-user="{{loginUser}}">
+          <span>
+            <div class="username">{{item.name}}</div>
+            <div class="text"><span>{{item.text}}</span></div>
+          </span>
+        </contact-card>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'message-list',
+      properties:{
+
+        loginUser: {
+          type:String
+        }
+      }
+    });
+  </script>
+</dom-module>

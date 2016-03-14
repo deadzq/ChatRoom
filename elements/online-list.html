@@ -1,0 +1,38 @@
+<link rel="import" href="../bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="online-list">  
+  <template>
+    <style>
+    .left{
+
+      text-align: right;
+    }
+    .online{
+
+      display:block;
+      width:10px;
+      height:10px;
+      background-color:green;
+      border-radius: 50%;
+    }
+    </style>
+    <firebase-collection
+      location="https://bbape.firebaseio.com/onlineusers"
+      data="{{list}}">
+    </firebase-collection>
+    <template is="dom-repeat" items="{{list}}">
+            <paper-item class="horizontal layout" style="backdround-color:#fff">
+              <span class="flex">{{item.name}}</span><span class="online"></span>
+            </paper-item>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'online-list'
+    });
+  </script>
+</dom-module>

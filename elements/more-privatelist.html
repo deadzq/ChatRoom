@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="more-contactcard.html">
+
+<dom-module id="more-privatelist">  
+  <template>      
+    <firebase-collection
+      order-by-child="time"
+      limit-to-last="15"
+      end-at={{endat}}
+      location={{location}}
+      data="{{messages}}"
+      order-value-type="number">
+    </firebase-collection>
+    <template is="dom-repeat" items="{{messages}}">
+        <more-contactcard name-test="{{item.name}}" log-user="{{loginUser}}">
+            <span>
+                <div class="username">[[item.name]]</div>
+                <div class="text">{{item.text}}</div>
+            </span>
+        </more-contactcard>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'more-privatelist',
+      properties:{
+          location: String,
+          endat: Number,
+          loginUser: {
+            type:String
+          }
+      }
+    });
+  </script>
+</dom-module>
