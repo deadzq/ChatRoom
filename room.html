@@ -20,7 +20,7 @@
     <link href="icon.png" sizes="57x57" rel="apple-touch-icon-precomposed">
     <link rel="stylesheet" href="css/room.min.css">
     <link rel="import" href="elements/elements.html">
-    <!--<style is="custom-style" include="iron-flex iron-flex-alignment">-->
+    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
     <!--<link rel="shortcut icon" href="favicon.ico"/>
     <link rel="bookmark" href="favicon.ico"/>-->
 </head>
@@ -46,11 +46,9 @@
             </paper-header-panel>
             <paper-header-panel main>
                 <paper-toolbar>
-                	<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                  <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
                   <span id="header" class="title">Public Room</span>
-                  <paper-icon-button icon="search"></paper-icon-button>
-                  <paper-input class="gginput" label="Search..." id="searchinput" onchange="handleSearch(event)"></paper-input>
-                  <paper-icon-button icon="account-circle" class="dropdown-trigger"></paper-icon-button>
+                  <paper-icon-button icon="account-circle"></paper-icon-button>
                   <span>{{occupancy}}</span>
                 </paper-toolbar>    
 
@@ -152,34 +150,20 @@
         
         // LISTEN FOR KEYPRESS AND TAP EVENT
         app.handleKeyup = function(e){
-
-          var message = app.inputMeg;
           if (e.keyCode == 13) {
-            if(message){
-              if(app.page<4){
+            if(app.inputMeg){
+                var message = app.inputMeg;
                 messagesRef.push({name:loginUser, text:message, time:get_time});
                 get_time++;
-              }
-              else{
-                console.log('key'+responseAddress.toString());
-                responseAddress.push({name:loginUser, text:message, time:responseOrder});
-                responseOrder++;
-              }
-            }
+            }  
             app.inputMeg='';
           }
         }
         app.handleTap = function(){
-
-          var message = app.inputMeg;
-          if(message){
-            if(app.page<4){
-              messagesRef.push({name:loginUser, text:message, time:get_time});
-              get_time++;
-            }else{
-              responseAddress.push({name:loginUser, text:message, time:responseOrder});
-              responseOrder++;
-            }
+          if(app.inputMeg){
+            var message = app.inputMeg;
+            messagesRef.push({name:loginUser, text:message, time:get_time});
+            get_time++;
           }
           app.inputMeg='';
         }
@@ -187,39 +171,29 @@
         //CLICK ON DRAW PANEL
         app.handleClickPublic = function(){
             
-            $('paper-item').removeClass('iron-selected');
-            $(event.target).addClass('iron-selected');
           messagesRef = messagesRef.root().child('messages');
           document.querySelector('#header').innerHTML = 'Public Room';
           var draw = document.querySelector('paper-drawer-panel');
           draw.togglePanel();
-          setTimeout(initialize(), 100);
-          $('#inputsection').show();
-          $('.shim').show();
           $('message-list').attr('login-user',loginUser);
         }
         
         app.handleClickPrivate = function(){
-
-            $('paper-item').removeClass('iron-selected');
-            $(event.target).addClass('iron-selected');
+          
           messagesRef = messagesRef.root().child('user').child(loginUser);
           document.querySelector('#header').innerHTML = 'Private Space';
           var draw = document.querySelector('paper-drawer-panel');
           draw.togglePanel();
-          setTimeout(initialize(), 100);
-          $('#inputsection').show();
-          $('.shim').show();
+          //setTimeout(initialize(), 100);
         }
 
         //SET FIREBASE COLLECTION LOCATION
-        var locate = "https://bbape.firebaseio.com/user/"+loginUser;
+        var locate = "https://bbape2.firebaseio.com/user/"+loginUser;
 
         //READ MORE
         app.handleScroll = function(){
             
             var chatDiv = document.querySelector('iron-pages');
-
             frontHeight = chatDiv.scrollHeight;
             frontTop = chatDiv.scrollTop;
             if(chatDiv.scrollTop<=300){
