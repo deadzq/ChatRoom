@@ -99,11 +99,12 @@
                 console.log(lastpoint);
             });
             //document.getElementById("ker").setAttribute("location", "haha")
-            console.log('herhehre');
-            $('message-list').attr('login-user',loginUser);
+            document.getElementsByTagName("MESSAGE-LIST")[0].setAttribute("login-user", loginUser);
+            console.log(document.getElementsByTagName("MESSAGE-LIST")[0].length);
+            //$('message-list').attr('login-user',loginUser);
             //$('private-list').attr('location',locate);
             //$('private-list').attr('login-user',loginUser);
-            //console.log(document.getElementsByTagName("MESSAGE-LIST")[0].innerHTML);
+            //console.log(document.getElementsByTagName("MESSAGE-LIST")[0].Set);
             //console.log('in '+locate);
         }
         $(document).ready(function(){
