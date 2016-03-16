@@ -8,3 +8,5 @@ It's a real time chat room which built by google polymer(front-end framework) an
 <li>You can see how many people in the real-time chat room the top right corner and know their names by clicking "Online Users".</li>
 <li>Just enjoy chatting with worldwide people!</li>
 </ol>
+# Attention
+If you directly enter the page of chat room,you will (all) be seemed to be same person named anonymous
