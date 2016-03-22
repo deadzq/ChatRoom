@@ -12,13 +12,13 @@ app.page = 0;
 
 function initialize(){
   messagesRef.once("value", function(snap) {
-      
+
       get_time = snap.numChildren();
       lastpoint = get_time-21;
   });
 }
 $(document).ready(function(){
-  initialize();    
+  initialize();
   setTimeout(function(){document.getElementById("ker").setAttribute("login-user", loginUser)},500);
 });
 
@@ -27,26 +27,24 @@ var userListRef = new Firebase('https://bbape2.firebaseio.com/onlineusers');
 var myUserRef = userListRef.push();
 var connectedRef = new Firebase("https://bbape2.firebaseio-demo.com//.info/connected");
 var counter = 0;
+/*check users online*/
 userListRef.once("value",function(snap){
 
   userListRef.on("child_added",function(snap){
       if(snap.val().name==loginUser){
-          
           counter++;
       }
   });
   if(counter==0){
-      
       setUserStatus("online");
   }
 });
 userListRef.on("child_removed",function(snap){
   if(snap.val().name==loginUser){
-      
       counter--;
   }
   if(counter==0){
-      
+
       setUserStatus("online");
   }
 });
@@ -56,7 +54,7 @@ userListRef.on("value",function(snap){
 
 connectedRef.on("value", function(isOnline) {
   if (isOnline.val()) {
-   
+
     myUserRef.onDisconnect().remove();
   }
 });
@@ -74,7 +72,7 @@ if (e.keyCode == 13) {
       var message = app.inputMeg;
       messagesRef.push({name:loginUser, text:message, time:get_time});
       get_time++;
-  }  
+  }
   app.inputMeg='';
 }
 }
@@ -115,7 +113,6 @@ app.handleScroll = function(){
   frontTop = chatDiv.scrollTop;
   if(chatDiv.scrollTop<=300){
       if(app.page==0 && lastpoint>=0){//Public Room
-          
           $('message-list').prepend('<more-messagelist login-user="'+loginUser+'" endat="'+lastpoint+'" front-height="'+frontHeight+'" front-top="'+frontTop+'"></more-messagelist>');
           lastpoint = lastpoint-15;
       }else if(app.page==1 && lastpoint>=0){//Private Space
