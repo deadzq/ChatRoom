@@ -6,26 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
     <meta name="description" content="Sample illustrating the use of the Web Application Manifest.">
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-    <!--iOS optimization-->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="iOS chat room">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link href="icon.png" sizes="152x152" rel="apple-touch-icon-precomposed">
-    <link href="icon.png" sizes="144x144" rel="apple-touch-icon-precomposed">
-    <link href="icon.png" sizes="76x76" rel="apple-touch-icon-precomposed">
-    <link href="icon.png" sizes="72x72" rel="apple-touch-icon-precomposed">
-    <link href="icon.png" sizes="120x120" rel="apple-touch-icon-precomposed">
-    <link href="icon.png" sizes="114x114" rel="apple-touch-icon-precomposed">
-    <link href="icon.png" sizes="57x57" rel="apple-touch-icon-precomposed">
     <link rel="stylesheet" href="css/room.min.css">
+    <link rel="stylesheet" href="css/remodal.css">
+    <link rel="stylesheet" href="css/remodal-default-theme.css">
     <link rel="import" href="elements/elements.html">
     <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
-    <!--<link rel="shortcut icon" href="favicon.ico"/>
-    <link rel="bookmark" href="favicon.ico"/>-->
 </head>
 <body class="fullbleed unresolved">
-    <template id="app" is="dom-bind"> 
+    <template id="app" is="dom-bind">
         <paper-drawer-panel>
             <paper-header-panel drawer>
                 <paper-toolbar>
@@ -50,7 +38,7 @@
                   <span id="header" class="title">Public Room</span>
                   <paper-icon-button icon="account-circle"></paper-icon-button>
                   <span>{{occupancy}}</span>
-                </paper-toolbar>    
+                </paper-toolbar>
 
                 <div class="fit layout vertical" id="AllSection">
                     <iron-pages selected="{{page}}" valueattr="data-category" class="flex" id="maincontainer" on-scroll="handleScroll">
@@ -74,8 +62,22 @@
             </paper-header-panel>
         </paper-drawer-panel>
     </template>
+    <!--dialog-->
+    <div class="remodal" data-remodal-id="modal" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+      <button data-remodal-action="close" class="remodal-close" aria-label="Close"></button>
+      <div>
+        <h2 id="modal1Title">Welcome!</h2>
+        <p id="modal1Desc">
+          If the profile picture appears both sides,try refreshing the page.<br>
+          I'm trying to fix it.<br>
+          If you have something to say,you can issue it or contact me.
+        </p>
+      </div>
+      <button data-remodal-action="confirm" class="remodal-confirm">I understand now</button>
+    </div>
     <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
-    <script src="https://code.jquery.com/jquery-2.2.1.min.js" integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00=" crossorigin="anonymous"></script>
-    <script src="js/room.min.js"></script>  
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="js/remodal.js"></script>
+    <script src="js/room.min.js"></script>
 </body>
 </html>

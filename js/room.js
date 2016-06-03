@@ -1,5 +1,8 @@
 // CHAT ROOM USER
 var loginUser = location.href.split("?")[1];
+if (loginUser.length==0) {
+  loginUser = "anonymous";
+}
 // SET FIREBASE COLLECTION LOCATION
 var locate = "https://bbape2.firebaseio.com/user/"+loginUser;
 var messagesRef = new Firebase('https://bbape2.firebaseio.com/messages');
@@ -107,7 +110,7 @@ app.handleClickPrivate = function(){
 
 // READ MORE
 app.handleScroll = function(){
-  
+
   var chatDiv = document.querySelector('iron-pages');
   frontHeight = chatDiv.scrollHeight;
   frontTop = chatDiv.scrollTop;
@@ -122,3 +125,9 @@ app.handleScroll = function(){
       }
   }
 }//END OF READ MORE
+
+//DIALOG SETTING
+var inst = $('[data-remodal-id=modal]').remodal({
+            modifier: 'with-red-theme'
+            });
+inst.open();
