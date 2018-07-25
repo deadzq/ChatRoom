@@ -12,3 +12,8 @@ It's a real time chat room which built by google polymer(front-end framework) an
 
 # Attention
 If you directly enter the page of chat room,you will (all) be seemed to be same person named anonymous
+
+--------------------------
+
+fork from extend1994
+1.I want make a dynamic data version for the chatRoom's users with Java ,for example,[changename][save data][check data][history data]
